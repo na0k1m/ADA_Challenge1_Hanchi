@@ -14,7 +14,18 @@ struct MainHomeView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-            MyProfileComponent()
+            
+            VStack {
+                MyProfileComponent()
+                    .padding(.top, 70)
+                FriendBookGridView()
+                    .padding(.horizontal)
+                Spacer()
+            }
+            VStack {
+                Spacer()
+                BottomButton()
+            }
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Creature {
+struct Creature: Hashable {
     var name: String
     var iconName: String
 }
@@ -18,9 +18,10 @@ struct MyCreature {
     var rank: String
 }
 
-struct EncounteredCreature {
+struct EncounteredCreature: Identifiable, Hashable {
+    let id = UUID()
     var character: Creature
     var isMet: Bool = false
-    let firstMetDay: Date?
+    let firstMetDay: String?
     var pokedCount: Int = 0
 }
