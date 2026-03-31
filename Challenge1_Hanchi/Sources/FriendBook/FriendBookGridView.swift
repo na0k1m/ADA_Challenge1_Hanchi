@@ -38,7 +38,7 @@ struct FriendBookGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(friendList) { friend in
-                    FriendBookCard(friend: friend)
+                    FriendBookCard(friend: friend, showFriendDetail: $showFriendDetail)
                 }
             }
         }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BottomButton: View {
+    @Binding var isMoveToOcean: Bool
     // TODO: ScrollEdgeEffect 이용해보기
     
     var body: some View {
@@ -17,7 +18,7 @@ struct BottomButton: View {
                     LinearGradient(gradient: Gradient(colors: [.clear, .white]), startPoint: .top, endPoint: .bottom)
                 )
                 .frame(height: 200)
-            Button(action: { }) {
+            Button(action: { isMoveToOcean = true }) {
                 HStack {
                     Image(.goggle)
                         .resizable()
@@ -40,5 +41,6 @@ struct BottomButton: View {
 }
 
 #Preview {
-    BottomButton()
+    @Previewable @State var isMoveToOcean: Bool = false
+    BottomButton(isMoveToOcean: $isMoveToOcean)
 }

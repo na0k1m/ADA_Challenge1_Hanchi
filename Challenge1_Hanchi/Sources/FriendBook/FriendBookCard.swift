@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendBookCard: View {
     let friend: EncounteredCreature
-    @State private var showFriendDetail = false
+    @Binding var showFriendDetail: Bool
     
     var body: some View {
         VStack {
@@ -32,5 +32,6 @@ struct FriendBookCard: View {
 }
 
 #Preview {
-    FriendBookCard(friend: EncounteredCreature(character: Creature(name: "가녀린 한치", iconName: "bokeo"), firstMetDay: "2026.03.30", pokedCount: 1))
+    @Previewable @State var showFriendDetail: Bool = false
+    FriendBookCard(friend: EncounteredCreature(character: Creature(name: "가녀린 한치", iconName: "bokeo"), firstMetDay: "2026.03.30", pokedCount: 1), showFriendDetail: $showFriendDetail)
 }
