@@ -8,24 +8,16 @@
 import SwiftUI
 
 struct BottomButton: View {
+    // TODO: ScrollEdgeEffect 이용해보기
+    
     var body: some View {
         ZStack {
-//            Image(.subBG)
             Rectangle()
                 .fill(
                     LinearGradient(gradient: Gradient(colors: [.clear, .white]), startPoint: .top, endPoint: .bottom)
                 )
                 .frame(height: 200)
             Button(action: { }) {
-//                ZStack {
-//                    Circle()
-//                        .frame(width: 100, height: 100)
-//                        .foregroundStyle(.seaBlue)
-//                    Image(.goggle)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 50)
-//                }
                 HStack {
                     Image(.goggle)
                         .resizable()
@@ -39,7 +31,7 @@ struct BottomButton: View {
                 .padding(.horizontal, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 50)
-                        .fill(.white.opacity(0.8))
+                        .fill(.white.opacity(0.9))
                 )
             }
             .padding(.top, 50)

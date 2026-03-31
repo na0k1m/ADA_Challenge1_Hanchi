@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainHomeView: View {
+    @Binding var showFriendDetail: Bool
+    
     var body: some View {
         ZStack {
             Image(.background)
@@ -18,7 +20,7 @@ struct MainHomeView: View {
             VStack {
                 MyProfileComponent()
                     .padding(.top, 70)
-                FriendBookGridView()
+                FriendBookGridView(showFriendDetail: $showFriendDetail)
                     .padding(.horizontal)
                 Spacer()
             }
@@ -26,10 +28,21 @@ struct MainHomeView: View {
                 Spacer()
                 BottomButton()
             }
+            
+            if showFriendDetail {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation { showFriendDetail = false }
+                    }
+                FriendBookCardDetail()
+                let _ = print("클릭됨")
+            }
         }
     }
 }
 
 #Preview {
-    MainHomeView()
+    @Previewable @State var showFriendDetail: Bool = false
+    MainHomeView(showFriendDetail: $showFriendDetail)
 }

@@ -32,6 +32,8 @@ struct FriendBookGridView: View {
         EncounteredCreature(character: Creature(name: "졸린 1", iconName: "saewoo"), firstMetDay: "2026.03.30"),
     ]
     
+    @Binding var showFriendDetail: Bool
+    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 10) {
@@ -44,5 +46,6 @@ struct FriendBookGridView: View {
 }
 
 #Preview {
-    FriendBookGridView()
+    @Previewable @State var showFriendDetail: Bool = false
+    FriendBookGridView(showFriendDetail: $showFriendDetail)
 }

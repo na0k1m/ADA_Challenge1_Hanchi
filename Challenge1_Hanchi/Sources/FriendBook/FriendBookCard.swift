@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FriendBookCard: View {
     let friend: EncounteredCreature
+    @State private var showFriendDetail = false
     
     var body: some View {
         VStack {
@@ -26,6 +27,7 @@ struct FriendBookCard: View {
                 .font(.OwnglyphMeetme.regular.font(size: 18))
                 .foregroundStyle(.white)
         }
+        .onTapGesture { showFriendDetail = true }
     }
 }
 
