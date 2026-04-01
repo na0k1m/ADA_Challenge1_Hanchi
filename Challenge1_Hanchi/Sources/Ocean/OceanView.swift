@@ -9,27 +9,14 @@ import SwiftUI
 
 struct OceanView: View {
     @Environment(\.dismiss) private var dismiss
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 2)
-    var friendList = [
-        EncounteredCreature(character: Creature(name: "졸린 1", iconName: "bokeo"), firstMetDay: "2026.03.30"),
-        EncounteredCreature(character: Creature(name: "배고픈 참치", iconName: "gamulchi"), firstMetDay: nil),
-        EncounteredCreature(character: Creature(name: "졸린 라라", iconName: "sora"), firstMetDay: "2026.03.30"),
-        EncounteredCreature(character: Creature(name: "웃긴 1", iconName: "kkotgae"), firstMetDay: "2026.03.30"),
-        EncounteredCreature(character: Creature(name: "졸린 1", iconName: "mooneo"), firstMetDay: "2026.03.30"),
-        EncounteredCreature(character: Creature(name: "졸린 1", iconName: "saewoo"), firstMetDay: "2026.03.30"),
-    ]
+    @State var viewModel: OceanViewModel = .init()
+    
+    let columns = Array(repeating: GridItem(.flexible(), spacing: -30), count: 2)
     
     @State private var animate = false
     
     var body: some View {
         ZStack {
-            Button( action: { dismiss() }) {
-                Image(systemName: "chevron.left")
-                    .resizable()
-                    .frame(width: 200)
-                    .foregroundStyle(.red)
-            } // 이거 안보여
-            .zIndex(0)
             Image(.background)
                 .resizable()
                 .scaledToFill()
@@ -37,8 +24,8 @@ struct OceanView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 0) {
-                    ForEach(friendList.enumerated(), id: \.offset) { index, friend in
-                        Image(.bokeo)
+                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
+                        Image(friend.creature.iconName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100)
@@ -53,14 +40,28 @@ struct OceanView: View {
                             .task {
                                 self.animate = true
                             }
+                            .onTapGesture {
+                                viewModel.showPokePopup = true
+                                viewModel.clickedCreature = friend
+                            }
                     }
                 }
+                .padding(.top, 100)
             }
-//            .padding(.top, 100)
+            
+            if viewModel.showPokePopup {
+                Color.black.opacity(0.2)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        viewModel.showPokePopup = false
+                    }
+                PokeAskingPopup(showPokePopup: $viewModel.showPokePopup, otherCreature: viewModel.clickedCreature ?? OtherCreature(creature: Creature(name: "nil", iconName: ""), firstMetDay: "nil"))
+            }
         }
     }
 }
 
 #Preview {
-    OceanView()
+    @Previewable @State var viewModel = OceanViewModel()
+    OceanView(viewModel: viewModel)
 }

@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct MyProfileComponent: View {
-    @State var name = "한치치"
-    @State private var isEditingMode: Bool = false
+    @Bindable var viewModel: MainHomeViewModel
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(style: StrokeStyle(lineWidth: 1))
                 .foregroundStyle(.white)
-                .background(.mint.opacity(0.1))
+                .background(.mint.opacity(0.2))
                 .padding(.horizontal, 20)
                 .frame(height: 200)
             HStack {
                 Spacer()
-                Image(.hanchi)
+                Image(viewModel.myCreature.creature.iconName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80)
@@ -29,31 +28,31 @@ struct MyProfileComponent: View {
                 
                 VStack(alignment: .leading) {
                     HStack {
-                        if !isEditingMode {
-                            Text(name)
+                        if !viewModel.isEditingMode {
+                            Text(viewModel.myCreature.creature.name)
                                 .font(.OwnglyphMeetme.regular.font(size: 30))
                                 .padding(.bottom)
                             Spacer()
-                            Button(action: { isEditingMode = true }) {
+                            Button(action: { viewModel.isEditingMode = true }) {
                                 Image(.pencil)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 30)
                                     .padding(.bottom)
                                     .foregroundStyle(.black)
-                            } // 저장, 엑스 버튼 추가하기
+                            }
                         }
                         else {
-                            TextField("닉네임", text: $name)
+                            TextField("닉네임", text: $viewModel.myCreature.creature.name)
                                 .font(.OwnglyphMeetme.regular.font(size: 30))
                                 .textFieldStyle(.roundedBorder)
                                 .frame(maxWidth: 130)
                                 .onSubmit {
-                                    isEditingMode = false
+                                    viewModel.isEditingMode = false
                                 }
                                 .padding(.bottom)
                             
-                            Button(action: { isEditingMode = false }) {
+                            Button(action: { viewModel.isEditingMode = false }) {
                                 Image(systemName: "checkmark.circle")
                                     .resizable()
                                     .scaledToFit()
@@ -61,16 +60,6 @@ struct MyProfileComponent: View {
                                     .padding(.bottom)
                                     .foregroundStyle(.black)
                             }
-//                            .padding(.trailing)
-                            
-//                            Button(action: { isEditingMode = false }) {
-//                                Image(systemName: "x.circle")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(width: 20)
-//                                    .padding(.bottom)
-//                                    .foregroundStyle(.black)
-//                            }
                         }
                         
                     }
@@ -89,5 +78,6 @@ struct MyProfileComponent: View {
 }
 
 #Preview {
-    MyProfileComponent()
+    @Previewable @State var viewModel = MainHomeViewModel()
+    MyProfileComponent(viewModel: viewModel)
 }

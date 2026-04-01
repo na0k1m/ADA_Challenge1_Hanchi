@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct MainHomeView: View {
-    @Binding var showFriendDetail: Bool
-    @Binding var isMoveToOcean: Bool
+    @State var viewModel: MainHomeViewModel = .init()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Image(.background)
                     .resizable()
@@ -20,38 +19,33 @@ struct MainHomeView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    MyProfileComponent()
+                    MyProfileComponent(viewModel: viewModel)
                         .padding(.top, 70)
-    //                Text("나의 친구 목록")
-    //                    .padding(.trailing, 230)
-    //                    .padding(.top)
-                    FriendBookGridView(showFriendDetail: $showFriendDetail)
+                    FriendBookGridView(viewModel: viewModel)
                         .padding(.horizontal)
                     Spacer()
                 }
                 VStack {
                     Spacer()
-                    BottomButton(isMoveToOcean: $isMoveToOcean)
+                    BottomButton(isMoveToOcean: $viewModel.isMoveToOcean)
                 }
                 
-                if showFriendDetail {
+                if viewModel.showFriendDetail {
                     Color.black.opacity(0.2)
                         .ignoresSafeArea()
                         .onTapGesture {
-                            showFriendDetail = false
+                            viewModel.showFriendDetail = false
                         }
-                    FriendBookCardDetail()
+                    FriendBookCardDetail(viewModel: viewModel)
                 }
             }
+            .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
+                OceanView()
+            }
         }
-        .fullScreenCover(isPresented: $isMoveToOcean) {
-            OceanView()
-        } // 이거 추가하고 나서 화면 아래로 밀림
     }
 }
 
 #Preview {
-    @Previewable @State var showFriendDetail: Bool = false
-    @Previewable @State var isMoveToOcean: Bool = false
-    MainHomeView(showFriendDetail: $showFriendDetail, isMoveToOcean: $isMoveToOcean)
+    MainHomeView()
 }

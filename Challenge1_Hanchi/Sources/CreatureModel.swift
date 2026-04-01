@@ -13,14 +13,14 @@ struct Creature: Hashable {
 }
 
 struct MyCreature {
-    var character: Creature
+    var creature: Creature
     var friendCount: Int
     var rank: String
 }
 
-struct EncounteredCreature: Identifiable, Hashable {
+struct OtherCreature: Identifiable, Hashable {
     let id = UUID()
-    var character: Creature
+    var creature: Creature
     var isMet: Bool = false
     let firstMetDay: String?
     var pokedCount: Int = 0

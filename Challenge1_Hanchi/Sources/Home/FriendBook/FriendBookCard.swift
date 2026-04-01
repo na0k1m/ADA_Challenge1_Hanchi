@@ -8,30 +8,35 @@
 import SwiftUI
 
 struct FriendBookCard: View {
-    let friend: EncounteredCreature
+    let friend: OtherCreature
     @Binding var showFriendDetail: Bool
+    
+    var onClick: (() -> Void)? = nil
     
     var body: some View {
         VStack {
             ZStack {
                 Circle()
-                    .fill(.mint.opacity(0.2))
+                    .fill(.mint.opacity(0.3))
                     .frame(width: 100)
                     .foregroundStyle(.white)
-                Image(friend.character.iconName)
+                Image(friend.creature.iconName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70)
             }
-            Text(friend.character.name)
+            Text(friend.creature.name)
                 .font(.OwnglyphMeetme.regular.font(size: 18))
                 .foregroundStyle(.white)
         }
-        .onTapGesture { showFriendDetail = true }
+        .onTapGesture {
+            showFriendDetail = true
+            onClick?()
+        }
     }
 }
 
 #Preview {
     @Previewable @State var showFriendDetail: Bool = false
-    FriendBookCard(friend: EncounteredCreature(character: Creature(name: "가녀린 한치", iconName: "bokeo"), firstMetDay: "2026.03.30", pokedCount: 1), showFriendDetail: $showFriendDetail)
+    FriendBookCard(friend: OtherCreature(creature: Creature(name: "가녀린 한치", iconName: "bokeo"), firstMetDay: "2026.03.30", pokedCount: 1), showFriendDetail: $showFriendDetail)
 }
