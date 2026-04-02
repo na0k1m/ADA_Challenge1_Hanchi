@@ -46,8 +46,10 @@ struct MainHomeView: View {
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
                 OceanView() { otherCreature in
                     viewModel.friendList.append(otherCreature)
+                    viewModel.myCreature.friendCount += 1
                 }
             }
+            .ignoresSafeArea(.keyboard)
         }
     }
 }

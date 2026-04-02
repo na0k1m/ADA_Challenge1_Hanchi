@@ -30,6 +30,6 @@ struct OtherCreature: Identifiable, Hashable {
     let id = UUID()
     var creature: Creature
     var isMet: Bool = false
-    let firstMetDay: String?
+    var firstMetDay: String?
     var pokedCount: Int = 0
 }

@@ -58,7 +58,9 @@ struct OceanView: View {
                         viewModel.showPokePopup = false
                     }
                 PokeAskingPopup(showPokePopup: $viewModel.showPokePopup, otherCreature: viewModel.clickedCreature ?? OtherCreature(creature: Creature(name: "nil", iconName: ""), firstMetDay: "nil")) { otherCreature in
-                    onPokeConfirmed?(otherCreature)
+                    var mutableCreature = otherCreature
+                    viewModel.poke(creature: &mutableCreature)
+                    onPokeConfirmed?(mutableCreature)
                 }
             }
         }

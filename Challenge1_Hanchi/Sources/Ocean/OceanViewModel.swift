@@ -12,16 +12,24 @@ class OceanViewModel {
     var showPokePopup = false
     
     var hanchiFriendList = [
-        OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: "2026.03.30"),
-        OtherCreature(creature: Creature(name: "졸린 라라", iconName: "sora"), firstMetDay: "2026.03.30"),
-        OtherCreature(creature: Creature(name: "웃긴 킼킼", iconName: "kkotgae"), firstMetDay: "2026.03.30"),
-        OtherCreature(creature: Creature(name: "짜증내는 새우", iconName: "saewoo"), firstMetDay: "2026.03.30"),
-        OtherCreature(creature: Creature(name: "지루한 해마", iconName: "haema"), firstMetDay: "nil"),
+        OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: nil),
+        OtherCreature(creature: Creature(name: "졸린 라라", iconName: "sora"), firstMetDay: nil),
+        OtherCreature(creature: Creature(name: "웃긴 킼킼", iconName: "kkotgae"), firstMetDay: nil),
+        OtherCreature(creature: Creature(name: "짜증내는 새우", iconName: "saewoo"), firstMetDay: nil),
+        OtherCreature(creature: Creature(name: "지루한 해마", iconName: "haema"), firstMetDay: nil),
     ]
     
     var clickedCreature: OtherCreature?
     
-    func addNewFriend() {
+    func poke(creature: inout OtherCreature) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
         
+        creature.pokedCount += 1
+        
+        if creature.isMet == false {
+            creature.firstMetDay = formatter.string(from: Date())
+            creature.isMet = true
+        }
     }
 }

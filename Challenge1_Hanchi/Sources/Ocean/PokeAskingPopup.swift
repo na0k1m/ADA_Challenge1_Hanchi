@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PokeAskingPopup: View {
     @Binding var showPokePopup: Bool
-    let otherCreature: OtherCreature
+    var otherCreature: OtherCreature
     
     var onPokeConfirmed: ((OtherCreature) -> Void)? = nil
     
