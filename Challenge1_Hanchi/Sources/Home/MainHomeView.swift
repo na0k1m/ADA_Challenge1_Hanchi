@@ -10,6 +10,10 @@ import SwiftUI
 struct MainHomeView: View {
     @State var viewModel: MainHomeViewModel = .init()
     
+    func getFriendList(friendList: [OtherCreature]) -> [OtherCreature] {
+        return friendList
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -40,7 +44,9 @@ struct MainHomeView: View {
                 }
             }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
-                OceanView()
+                OceanView() { otherCreature in
+                    viewModel.friendList.append(otherCreature)
+                }
             }
         }
     }

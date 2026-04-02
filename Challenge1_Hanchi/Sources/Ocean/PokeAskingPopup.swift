@@ -11,6 +11,8 @@ struct PokeAskingPopup: View {
     @Binding var showPokePopup: Bool
     let otherCreature: OtherCreature
     
+    var onPokeConfirmed: ((OtherCreature) -> Void)? = nil
+    
     var body: some View {
         VStack {
             Group {
@@ -30,7 +32,10 @@ struct PokeAskingPopup: View {
                         .foregroundStyle(.black)
                 }
                 Spacer().frame(width: 20)
-                Button(action: { showPokePopup = false }) {
+                Button(action: {
+                    onPokeConfirmed?(otherCreature)
+                    showPokePopup = false
+                }) {
                     Text("확인")
                         .padding(.vertical, 8)
                         .padding(.horizontal, 30)

@@ -15,6 +15,8 @@ struct OceanView: View {
     
     @State private var animate = false
     
+    var onPokeConfirmed: ((OtherCreature) -> Void)? = nil
+    
     var body: some View {
         ZStack {
             Image(.background)
@@ -55,7 +57,9 @@ struct OceanView: View {
                     .onTapGesture {
                         viewModel.showPokePopup = false
                     }
-                PokeAskingPopup(showPokePopup: $viewModel.showPokePopup, otherCreature: viewModel.clickedCreature ?? OtherCreature(creature: Creature(name: "nil", iconName: ""), firstMetDay: "nil"))
+                PokeAskingPopup(showPokePopup: $viewModel.showPokePopup, otherCreature: viewModel.clickedCreature ?? OtherCreature(creature: Creature(name: "nil", iconName: ""), firstMetDay: "nil")) { otherCreature in
+                    onPokeConfirmed?(otherCreature)
+                }
             }
         }
     }

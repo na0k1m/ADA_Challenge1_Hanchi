@@ -64,8 +64,8 @@ struct MyProfileComponent: View {
                         
                     }
                     Group {
-                        Text("친구: 1 명")
-                        Text("등급: 마당발")
+                        Text("친구: \(viewModel.myCreature.friendCount) 명")
+                        Text("등급: \(viewModel.myCreature.rank)")
                     }
                     .font(.OwnglyphMeetme.regular.font(size: 23))
                     .foregroundStyle(Color(.secondaryLabel))
