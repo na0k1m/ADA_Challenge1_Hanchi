@@ -15,7 +15,7 @@ class MainHomeViewModel {
     var showPokePopup = false // 이건 나중에 빼도 될듯
     var isEditingMode = false
     
-    var friendList = [
+    var friendList: [OtherCreature] = [
         OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: "2026.03.30"),
         OtherCreature(creature: Creature(name: "배고픈 참치", iconName: "gamulchi"), firstMetDay: nil),
         OtherCreature(creature: Creature(name: "졸린 라라", iconName: "sora"), firstMetDay: "2026.03.30"),

@@ -17,15 +17,25 @@ struct FriendBookGridView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(viewModel.friendList) { friend in
-                    // Swift Closure
-                    FriendBookCard(friend: friend, showFriendDetail: $viewModel.showFriendDetail) {
-                        viewModel.selectedFriend = friend
+        if !viewModel.friendList.isEmpty {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(viewModel.friendList) { friend in
+                        // Swift Closure
+                        FriendBookCard(friend: friend, showFriendDetail: $viewModel.showFriendDetail) {
+                            viewModel.selectedFriend = friend
+                        }
                     }
                 }
             }
+        }
+        else {
+            Spacer()
+            Text("친구 목록이 비어있어요.")
+                .font(.OwnglyphMeetme.regular.font(size: 25))
+                .foregroundStyle(.white)
+            Spacer()
+                .padding(.bottom, 350)
         }
     }
 }

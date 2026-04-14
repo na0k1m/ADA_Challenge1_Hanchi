@@ -17,7 +17,7 @@ struct FriendBookCard: View {
         VStack {
             ZStack {
                 Circle()
-                    .fill(.mint.opacity(0.3))
+                    .fill(.white.opacity(0.3))
                     .frame(width: 100)
                     .foregroundStyle(.white)
                 Image(friend.creature.iconName)

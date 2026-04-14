@@ -15,7 +15,7 @@ struct MyProfileComponent: View {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(style: StrokeStyle(lineWidth: 1))
                 .foregroundStyle(.white)
-                .background(.mint.opacity(0.2))
+                .background(.white.opacity(0.2))
                 .padding(.horizontal, 20)
                 .frame(height: 200)
             HStack {
