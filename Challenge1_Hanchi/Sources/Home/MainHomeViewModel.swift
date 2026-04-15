@@ -9,6 +9,7 @@ import Foundation
 
 @Observable
 class MainHomeViewModel {
+    private let userCreatureKey = "SavedUserCreature" // UserDefaults 저장 키 값
     var myCreature: MyCreature
     var showFriendDetail = false
     var isMoveToOcean = false
@@ -27,14 +28,26 @@ class MainHomeViewModel {
     var selectedFriend: OtherCreature?
     
     init() {
-        let randomType = CreatureType.allCases.randomElement() ?? .hanchi
-        
-        let defaultCharacter = Creature(
-            name: randomType.defaultNickname,
-            iconName: randomType.rawValue
-        )
-        
-        self.myCreature = MyCreature(creature: defaultCharacter)
+        if let data = UserDefaults.standard.data(forKey: userCreatureKey),
+           let decodedCreature = try? JSONDecoder().decode(Creature.self, from: data) {
+            self.myCreature = MyCreature(creature: decodedCreature)
+        } else {
+            let randomType = CreatureType.allCases.randomElement() ?? .hanchi
+            let newCreature = Creature(name: randomType.defaultNickname, iconName: randomType.rawValue)
+            self.myCreature = MyCreature(creature: newCreature)
+            
+            saveToUserDefaults(newCreature)
+        }
         self.myCreature.friendCount = friendList.count
+    }
+    
+    func saveNickname() {
+        saveToUserDefaults(myCreature.creature)
+    }
+
+    private func saveToUserDefaults(_ creature: Creature) {
+        if let encoded = try? JSONEncoder().encode(creature) {
+            UserDefaults.standard.set(encoded, forKey: userCreatureKey)
+        }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Creature: Hashable {
+struct Creature: Hashable, Decodable, Encodable {
     var name: String
     var iconName: String
 }

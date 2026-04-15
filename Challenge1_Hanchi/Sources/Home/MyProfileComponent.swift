@@ -52,7 +52,10 @@ struct MyProfileComponent: View {
                                 }
                                 .padding(.bottom)
                             
-                            Button(action: { viewModel.isEditingMode = false }) {
+                            Button(action: {
+                                viewModel.isEditingMode = false
+                                viewModel.saveNickname()
+                            }) {
                                 Image(systemName: "checkmark.circle")
                                     .resizable()
                                     .scaledToFit()
