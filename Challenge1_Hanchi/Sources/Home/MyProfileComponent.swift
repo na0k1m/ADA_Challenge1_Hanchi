@@ -30,21 +30,21 @@ struct MyProfileComponent: View {
                     HStack {
                         if !viewModel.isEditingMode {
                             Text(viewModel.myCreature.creature.name)
-                                .font(.OwnglyphMeetme.regular.font(size: 30))
+                                .font(.OwnglyphMeetme.regular.font(size: 26))
                                 .padding(.bottom)
                             Spacer()
                             Button(action: { viewModel.isEditingMode = true }) {
                                 Image(.pencil)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 30)
+                                    .frame(width: 26)
                                     .padding(.bottom)
                                     .foregroundStyle(.black)
                             }
                         }
                         else {
                             TextField("닉네임", text: $viewModel.myCreature.creature.name)
-                                .font(.OwnglyphMeetme.regular.font(size: 30))
+                                .font(.OwnglyphMeetme.regular.font(size: 26))
                                 .textFieldStyle(.roundedBorder)
                                 .frame(maxWidth: 130)
                                 .onSubmit {

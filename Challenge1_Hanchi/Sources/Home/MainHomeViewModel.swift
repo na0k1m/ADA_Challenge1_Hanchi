@@ -26,8 +26,15 @@ class MainHomeViewModel {
     
     var selectedFriend: OtherCreature?
     
-    init(myCreature: MyCreature = .init(creature: .init(name: "바보", iconName: "hanchi"), friendCount: 0)) {
-        self.myCreature = myCreature
+    init() {
+        let randomType = CreatureType.allCases.randomElement() ?? .hanchi
+        
+        let defaultCharacter = Creature(
+            name: randomType.defaultNickname,
+            iconName: randomType.rawValue
+        )
+        
+        self.myCreature = MyCreature(creature: defaultCharacter)
         self.myCreature.friendCount = friendList.count
     }
 }

@@ -31,11 +31,12 @@ struct FriendBookGridView: View {
         }
         else {
             Spacer()
-            Text("친구 목록이 비어있어요.")
+            Text("친구 목록이 비어있어요.\n\n블루투스를 켜고 주변 친구들을 찾아보세요!")
                 .font(.OwnglyphMeetme.regular.font(size: 25))
                 .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
             Spacer()
-                .padding(.bottom, 350)
+                .padding(.bottom, 300)
         }
     }
 }
