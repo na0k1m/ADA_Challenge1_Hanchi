@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OceanView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
     @State var viewModel: OceanViewModel = .init()
+    
+    var realFriends: [OtherCreature]
     
     let columns = Array(repeating: GridItem(.flexible(), spacing: -30), count: 2)
     
@@ -43,8 +48,9 @@ struct OceanView: View {
                                 self.animate = true
                             }
                             .onTapGesture {
+                                let realFriend = realFriends.first(where: { $0.id == friend.id })
                                 viewModel.showPokePopup = true
-                                viewModel.clickedCreature = friend
+                                viewModel.clickedCreature = realFriend ?? friend
                             }
                     }
                 }
@@ -58,9 +64,8 @@ struct OceanView: View {
                         viewModel.showPokePopup = false
                     }
                 PokeAskingPopup(showPokePopup: $viewModel.showPokePopup, otherCreature: viewModel.clickedCreature ?? OtherCreature(creature: Creature(name: "nil", iconName: ""), firstMetDay: "nil")) { otherCreature in
-                    var mutableCreature = otherCreature
-                    viewModel.poke(creature: &mutableCreature)
-                    onPokeConfirmed?(mutableCreature)
+                    viewModel.addOrPokeFriend(context: modelContext, foundCreature: otherCreature, currentFriends: realFriends)
+                    onPokeConfirmed?(otherCreature)
                 }
             }
         }
@@ -69,5 +74,5 @@ struct OceanView: View {
 
 #Preview {
     @Previewable @State var viewModel = OceanViewModel()
-    OceanView(viewModel: viewModel)
+    OceanView(viewModel: viewModel, realFriends: [])
 }

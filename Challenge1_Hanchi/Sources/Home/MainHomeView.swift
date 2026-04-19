@@ -27,7 +27,6 @@ struct MainHomeView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    let _ = print("현재프로필수:\(myCreatures.count)")
                     if let myProfile = myCreatures.first {
                         MyProfileComponent(viewModel: viewModel, myCreature: myProfile)
                             .padding(.top, 70)
@@ -57,13 +56,9 @@ struct MainHomeView: View {
                 viewModel.createInitialData(context: modelContext, isEmpty: myCreatures.isEmpty)
             }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
-                OceanView() { otherCreature in
-//                    viewModel.friendList.append(otherCreature)
-//                    viewModel.myCreature?.friendCount += 1
-                    modelContext.insert(otherCreature)
-                    
+                OceanView(realFriends: otherCreatures) { discovered in
                     if let myProfile = myCreatures.first {
-                        myProfile.friendCount += 1
+                        myProfile.friendCount = otherCreatures.count
                     }
                 }
             }
