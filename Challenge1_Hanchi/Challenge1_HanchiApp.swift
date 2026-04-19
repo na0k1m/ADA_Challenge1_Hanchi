@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Challenge1_HanchiApp: App {
@@ -13,5 +14,6 @@ struct Challenge1_HanchiApp: App {
         WindowGroup {
             MainHomeView()
         }
+        .modelContainer(for: [MyCreature.self, OtherCreature.self])
     }
 }

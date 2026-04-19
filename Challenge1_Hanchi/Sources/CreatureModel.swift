@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Creature: Hashable, Decodable, Encodable {
+struct Creature: Hashable, Codable {
     var name: String
     var iconName: String
 }
@@ -30,7 +31,8 @@ enum CreatureType: String, CaseIterable, Codable {
     }
 }
 
-struct MyCreature {
+@Model
+class MyCreature {
     var id = UUID()
     var creature: Creature
     var friendCount: Int = 0
@@ -44,12 +46,27 @@ struct MyCreature {
         default: return "포항의 전설"
         }
     }
+    
+    init(id: UUID = UUID(), creature: Creature, friendCount: Int = 0) {
+        self.id = id
+        self.creature = creature
+        self.friendCount = friendCount
+    }
 }
 
-struct OtherCreature: Identifiable, Hashable {
+@Model
+class OtherCreature {
     var id = UUID()
     var creature: Creature
     var isMet: Bool = false
     var firstMetDay: String?
     var pokedCount: Int = 0
+    
+    init(id: UUID = UUID(), creature: Creature, isMet: Bool = false, firstMetDay: String? = nil, pokedCount: Int = 0) {
+        self.id = id
+        self.creature = creature
+        self.isMet = isMet
+        self.firstMetDay = firstMetDay
+        self.pokedCount = pokedCount
+    }
 }

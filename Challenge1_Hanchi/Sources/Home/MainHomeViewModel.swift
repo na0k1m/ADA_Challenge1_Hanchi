@@ -6,15 +6,17 @@
 //
 
 import Foundation
+import SwiftData
 
 @Observable
 class MainHomeViewModel {
     private let userCreatureKey = "SavedUserCreature" // UserDefaults 저장 키 값
-    var myCreature: MyCreature
+//    var myCreature: MyCreature?
     var showFriendDetail = false
     var isMoveToOcean = false
     var showPokePopup = false // 이건 나중에 빼도 될듯
     var isEditingMode = false
+    var tempNickname: String = ""
     
     var friendList: [OtherCreature] = [
         OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: "2026.03.30"),
@@ -27,27 +29,33 @@ class MainHomeViewModel {
     
     var selectedFriend: OtherCreature?
     
-    init() {
-        if let data = UserDefaults.standard.data(forKey: userCreatureKey),
-           let decodedCreature = try? JSONDecoder().decode(Creature.self, from: data) {
-            self.myCreature = MyCreature(creature: decodedCreature)
-        } else {
-            let randomType = CreatureType.allCases.randomElement() ?? .hanchi
-            let newCreature = Creature(name: randomType.defaultNickname, iconName: randomType.rawValue)
-            self.myCreature = MyCreature(creature: newCreature)
-            
-            saveToUserDefaults(newCreature)
-        }
-        self.myCreature.friendCount = friendList.count
+    init() {}
+    
+    func createInitialData(context: ModelContext, isEmpty: Bool) {
+        guard isEmpty else { return }
+        let randomType = CreatureType.allCases.randomElement() ?? .hanchi
+        let newCreature = Creature(name: randomType.defaultNickname, iconName: randomType.rawValue)
+        let newProfile = MyCreature(creature: newCreature)
+        
+        context.insert(newProfile)
     }
     
-    func saveNickname() {
-        saveToUserDefaults(myCreature.creature)
+    func startEditing(currentName: String) {
+        tempNickname = currentName
+        isEditingMode = true
     }
-
-    private func saveToUserDefaults(_ creature: Creature) {
-        if let encoded = try? JSONEncoder().encode(creature) {
-            UserDefaults.standard.set(encoded, forKey: userCreatureKey)
+    
+    func saveNickname(profile: MyCreature) {
+        var updatedCreature = profile.creature
+        updatedCreature.name = tempNickname
+        profile.creature = updatedCreature
+        if let context = profile.modelContext {
+            do {
+                try context.save()
+            } catch {
+                print("닉네임 저장 실패")
+            }
         }
+        isEditingMode = false
     }
 }

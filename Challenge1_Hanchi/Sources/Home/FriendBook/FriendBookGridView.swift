@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FriendBookGridView: View {
     @Bindable var viewModel: MainHomeViewModel
+    var friendList: [OtherCreature]
     
     let columns = [
         GridItem(.flexible()),
@@ -17,10 +18,10 @@ struct FriendBookGridView: View {
     ]
     
     var body: some View {
-        if !viewModel.friendList.isEmpty {
+        if !friendList.isEmpty {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(viewModel.friendList) { friend in
+                    ForEach(friendList) { friend in
                         // Swift Closure
                         FriendBookCard(friend: friend, showFriendDetail: $viewModel.showFriendDetail) {
                             viewModel.selectedFriend = friend
@@ -43,5 +44,13 @@ struct FriendBookGridView: View {
 
 #Preview {
     @Previewable @State var viewModel = MainHomeViewModel()
-    FriendBookGridView(viewModel: viewModel)
+    let mockFriends = [
+        OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: "2026.03.30"),
+        OtherCreature(creature: Creature(name: "배고픈 참치", iconName: "gamulchi"), firstMetDay: nil),
+        OtherCreature(creature: Creature(name: "졸린 라라", iconName: "sora"), firstMetDay: "2026.03.30"),
+        OtherCreature(creature: Creature(name: "웃긴 킼킼", iconName: "kkotgae"), firstMetDay: "2026.03.30"),
+        OtherCreature(creature: Creature(name: "화난 문어티비", iconName: "mooneo"), firstMetDay: "2026.03.30"),
+        OtherCreature(creature: Creature(name: "짜증내는 새우", iconName: "saewoo"), firstMetDay: "2026.03.30"),
+    ]
+    FriendBookGridView(viewModel: viewModel, friendList: mockFriends)
 }

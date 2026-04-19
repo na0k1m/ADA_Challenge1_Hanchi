@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainHomeView: View {
-    @State var viewModel: MainHomeViewModel = .init()
+    @Environment(\.modelContext) private var modelContext
+    @Query var myCreatures: [MyCreature]
+    @Query var otherCreatures: [OtherCreature]
+    @State var viewModel = MainHomeViewModel()
     
     func getFriendList(friendList: [OtherCreature]) -> [OtherCreature] {
         return friendList
@@ -23,9 +27,15 @@ struct MainHomeView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    MyProfileComponent(viewModel: viewModel)
-                        .padding(.top, 70)
-                    FriendBookGridView(viewModel: viewModel)
+                    let _ = print("현재프로필수:\(myCreatures.count)")
+                    if let myProfile = myCreatures.first {
+                        MyProfileComponent(viewModel: viewModel, myCreature: myProfile)
+                            .padding(.top, 70)
+                    }
+                    else {
+                        ProgressView()
+                    }
+                    FriendBookGridView(viewModel: viewModel, friendList: otherCreatures)
                         .padding(.horizontal)
                     Spacer()
                 }
@@ -43,10 +53,18 @@ struct MainHomeView: View {
                     FriendBookCardDetail(viewModel: viewModel)
                 }
             }
+            .task {
+                viewModel.createInitialData(context: modelContext, isEmpty: myCreatures.isEmpty)
+            }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
                 OceanView() { otherCreature in
-                    viewModel.friendList.append(otherCreature)
-                    viewModel.myCreature.friendCount += 1
+//                    viewModel.friendList.append(otherCreature)
+//                    viewModel.myCreature?.friendCount += 1
+                    modelContext.insert(otherCreature)
+                    
+                    if let myProfile = myCreatures.first {
+                        myProfile.friendCount += 1
+                    }
                 }
             }
             .ignoresSafeArea(.keyboard)

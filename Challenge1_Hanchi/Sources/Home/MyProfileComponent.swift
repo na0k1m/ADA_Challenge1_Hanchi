@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MyProfileComponent: View {
     @Bindable var viewModel: MainHomeViewModel
+    @Bindable var myCreature: MyCreature
     
     var body: some View {
         ZStack {
@@ -20,7 +22,7 @@ struct MyProfileComponent: View {
                 .frame(height: 200)
             HStack {
                 Spacer()
-                Image(viewModel.myCreature.creature.iconName)
+                Image(myCreature.creature.iconName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80)
@@ -29,11 +31,13 @@ struct MyProfileComponent: View {
                 VStack(alignment: .leading) {
                     HStack {
                         if !viewModel.isEditingMode {
-                            Text(viewModel.myCreature.creature.name)
+                            Text(myCreature.creature.name)
                                 .font(.OwnglyphMeetme.regular.font(size: 26))
                                 .padding(.bottom)
                             Spacer()
-                            Button(action: { viewModel.isEditingMode = true }) {
+                            Button(action: {
+                                viewModel.startEditing(currentName: myCreature.creature.name)
+                            }) {
                                 Image(.pencil)
                                     .resizable()
                                     .scaledToFit()
@@ -43,18 +47,17 @@ struct MyProfileComponent: View {
                             }
                         }
                         else {
-                            TextField("닉네임", text: $viewModel.myCreature.creature.name)
+                            TextField("닉네임", text: $viewModel.tempNickname)
                                 .font(.OwnglyphMeetme.regular.font(size: 26))
                                 .textFieldStyle(.roundedBorder)
                                 .frame(maxWidth: 130)
                                 .onSubmit {
-                                    viewModel.isEditingMode = false
+                                    viewModel.saveNickname(profile: myCreature)
                                 }
                                 .padding(.bottom)
                             
                             Button(action: {
-                                viewModel.isEditingMode = false
-                                viewModel.saveNickname()
+                                viewModel.saveNickname(profile: myCreature)
                             }) {
                                 Image(systemName: "checkmark.circle")
                                     .resizable()
@@ -67,8 +70,8 @@ struct MyProfileComponent: View {
                         
                     }
                     Group {
-                        Text("친구: \(viewModel.myCreature.friendCount) 명")
-                        Text("등급: \(viewModel.myCreature.rank)")
+                        Text("친구: \(myCreature.friendCount) 명")
+                        Text("등급: \(myCreature.rank)")
                     }
                     .font(.OwnglyphMeetme.regular.font(size: 23))
                     .foregroundStyle(Color(.secondaryLabel))
@@ -82,5 +85,7 @@ struct MyProfileComponent: View {
 
 #Preview {
     @Previewable @State var viewModel = MainHomeViewModel()
-    MyProfileComponent(viewModel: viewModel)
+    let mockProfile = MyCreature(creature: Creature(name: "해맑은 한치", iconName: "hanchi"), friendCount: 5)
+    MyProfileComponent(viewModel: viewModel, myCreature: mockProfile)
+        .modelContainer(for: [MyCreature.self, OtherCreature.self], inMemory: true)
 }
