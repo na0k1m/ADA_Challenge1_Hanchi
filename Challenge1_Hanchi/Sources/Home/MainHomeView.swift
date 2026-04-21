@@ -56,7 +56,7 @@ struct MainHomeView: View {
                 viewModel.createInitialData(context: modelContext, isEmpty: myCreatures.isEmpty)
             }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
-                OceanView(realFriends: otherCreatures) { discovered in
+                OceanView(myProfile: myCreatures.first, realFriends: otherCreatures) { discovered in
                     if let myProfile = myCreatures.first {
                         myProfile.friendCount = otherCreatures.count
                     }

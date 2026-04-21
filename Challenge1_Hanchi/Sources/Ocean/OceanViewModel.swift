@@ -11,7 +11,13 @@ import SwiftData
 @Observable
 class OceanViewModel {
     var showPokePopup = false
+    
+    // 블루투스 사용 전 사용한 목데이터
     var hanchiFriendList: [OtherCreature] = []
+    
+    var BLEhanchiFriendList: [OtherCreature] {
+        multipeerManager?.discoveredCreatures ?? []
+    }
     
     init() {
         self.hanchiFriendList = [
@@ -25,9 +31,17 @@ class OceanViewModel {
     
     var clickedCreature: OtherCreature?
     
+    var multipeerManager: MultipeerManager?
+    
+    func setupMultipeer(myProfile: MyCreature) {
+        if multipeerManager == nil {
+            multipeerManager = MultipeerManager(myProfile: myProfile)
+        }
+    }
+    
     func addOrPokeFriend(context: ModelContext, foundCreature: OtherCreature, currentFriends: [OtherCreature]) {
-        print("🔍 발견된 생물 ID: \(foundCreature.id)")
-        print("📚 내 친구 목록 ID들: \(currentFriends.map { $0.id })")
+        print("발견된 생물 ID: \(foundCreature.id)")
+        print("내 친구 목록 ID들: \(currentFriends.map { $0.id })")
         // 배열의 0번 인덱스부터 시작해서 조건을 만족하는 요소를 찾을 때까지 뒤로 이동
         if let existingFriend = currentFriends.first(where: { $0.id == foundCreature.id }) {
             existingFriend.pokedCount += 1

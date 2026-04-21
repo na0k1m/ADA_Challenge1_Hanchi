@@ -14,6 +14,7 @@ struct OceanView: View {
     
     @State var viewModel: OceanViewModel = .init()
     
+    var myProfile: MyCreature?
     var realFriends: [OtherCreature]
     
     let columns = Array(repeating: GridItem(.flexible(), spacing: -30), count: 2)
@@ -31,7 +32,8 @@ struct OceanView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 0) {
-                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
+//                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
+                    ForEach(viewModel.BLEhanchiFriendList.enumerated(), id: \.offset) { index, friend in
                         Image(friend.creature.iconName)
                             .resizable()
                             .scaledToFit()
@@ -67,6 +69,11 @@ struct OceanView: View {
                     viewModel.addOrPokeFriend(context: modelContext, foundCreature: otherCreature, currentFriends: realFriends)
                     onPokeConfirmed?(otherCreature)
                 }
+            }
+        }
+        .task {
+            if let profile = myProfile {
+                viewModel.setupMultipeer(myProfile: profile)
             }
         }
     }
