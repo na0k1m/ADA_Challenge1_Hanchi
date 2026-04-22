@@ -65,6 +65,7 @@ struct MainHomeView: View {
                     viewModel.isNicknameChanged = false
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea(.keyboard)
         }
     }

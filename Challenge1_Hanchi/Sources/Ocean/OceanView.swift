@@ -32,41 +32,50 @@ struct OceanView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
             
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 0) {
-//                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
-                    ForEach(viewModel.BLEhanchiFriendList.enumerated(), id: \.offset) { index, friend in
-                        Image(friend.creature.iconName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100)
-                            .padding(.bottom, index % 2 == 0 ? 60 : 0)
-                            .padding(.top, index % 2 == 1 ? 60 : 0)
-                            .offset(y: animate ? -15 : 15)
-                            .animation(
-                                Animation.easeInOut(duration: 1.0)
-                                    .repeatForever(autoreverses: true),
-                                value: animate
-                            )
-                            .task {
-                                self.animate = true
-                            }
-                            .onTapGesture {
-                                let savedFriend = realFriends.first(where: { $0.id == friend.id })
-                                
-                                if let existing = savedFriend {
-                                    existing.creature.name = friend.creature.name
-                                    existing.creature.iconName = friend.creature.iconName
-                                    viewModel.clickedCreature = existing
+            if !realFriends.isEmpty {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 0) {
+    //                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
+                        ForEach(viewModel.BLEhanchiFriendList.enumerated(), id: \.offset) { index, friend in
+                            Image(friend.creature.iconName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100)
+                                .padding(.bottom, index % 2 == 0 ? 60 : 0)
+                                .padding(.top, index % 2 == 1 ? 60 : 0)
+                                .offset(y: animate ? -15 : 15)
+                                .animation(
+                                    Animation.easeInOut(duration: 1.0)
+                                        .repeatForever(autoreverses: true),
+                                    value: animate
+                                )
+                                .task {
+                                    self.animate = true
                                 }
-                                else {
-                                    viewModel.clickedCreature = friend
+                                .onTapGesture {
+                                    let savedFriend = realFriends.first(where: { $0.id == friend.id })
+                                    
+                                    if let existing = savedFriend {
+                                        existing.creature.name = friend.creature.name
+                                        existing.creature.iconName = friend.creature.iconName
+                                        viewModel.clickedCreature = existing
+                                    }
+                                    else {
+                                        viewModel.clickedCreature = friend
+                                    }
+                                    viewModel.showPokePopup = true
                                 }
-                                viewModel.showPokePopup = true
-                            }
+                        }
                     }
+                    .padding(.top, 100)
                 }
-                .padding(.top, 100)
+            }
+            else {
+                Text("바닷속이 고요하네요.\n\nWi-Fi나 블루투스가 켜져 있는지 확인해 보세요!")
+                    .font(.OwnglyphMeetme.regular.font(size: 25))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom)
             }
             
             if viewModel.showPokePopup {

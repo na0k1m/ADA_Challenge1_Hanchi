@@ -80,6 +80,8 @@ struct MyProfileComponent: View {
             }
             .padding(.horizontal, 50)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea(.keyboard)
     }
 }
 
