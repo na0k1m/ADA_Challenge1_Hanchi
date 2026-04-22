@@ -56,10 +56,13 @@ struct MainHomeView: View {
                 viewModel.createInitialData(context: modelContext, isEmpty: myCreatures.isEmpty)
             }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
-                OceanView(myProfile: myCreatures.first, realFriends: otherCreatures) { discovered in
+                OceanView(myProfile: myCreatures.first, realFriends: otherCreatures, shouldForceRefresh: viewModel.isNicknameChanged) { discovered in
                     if let myProfile = myCreatures.first {
                         myProfile.friendCount = otherCreatures.count
                     }
+                }
+                .task {
+                    viewModel.isNicknameChanged = false
                 }
             }
             .ignoresSafeArea(.keyboard)

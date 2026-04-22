@@ -33,8 +33,9 @@ class OceanViewModel {
     
     var multipeerManager: MultipeerManager?
     
-    func setupMultipeer(myProfile: MyCreature) {
-        if multipeerManager == nil {
+    func setupMultipeer(myProfile: MyCreature, forceRefresh: Bool = false) {
+        if multipeerManager == nil || forceRefresh {
+            multipeerManager?.stopAll()
             multipeerManager = MultipeerManager(myProfile: myProfile)
         }
     }

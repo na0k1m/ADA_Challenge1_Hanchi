@@ -17,6 +17,7 @@ class MainHomeViewModel {
     var showPokePopup = false // 이건 나중에 빼도 될듯
     var isEditingMode = false
     var tempNickname: String = ""
+    var isNicknameChanged = false
     
     var friendList: [OtherCreature] = [
         OtherCreature(creature: Creature(name: "배부른 복어", iconName: "bokeo"), firstMetDay: "2026.03.30"),
@@ -52,6 +53,7 @@ class MainHomeViewModel {
         if let context = profile.modelContext {
             do {
                 try context.save()
+                isNicknameChanged = true
             } catch {
                 print("닉네임 저장 실패")
             }

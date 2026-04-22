@@ -17,6 +17,8 @@ struct OceanView: View {
     var myProfile: MyCreature?
     var realFriends: [OtherCreature]
     
+    var shouldForceRefresh: Bool
+    
     let columns = Array(repeating: GridItem(.flexible(), spacing: -30), count: 2)
     
     @State private var animate = false
@@ -50,9 +52,17 @@ struct OceanView: View {
                                 self.animate = true
                             }
                             .onTapGesture {
-                                let realFriend = realFriends.first(where: { $0.id == friend.id })
+                                let savedFriend = realFriends.first(where: { $0.id == friend.id })
+                                
+                                if let existing = savedFriend {
+                                    existing.creature.name = friend.creature.name
+                                    existing.creature.iconName = friend.creature.iconName
+                                    viewModel.clickedCreature = existing
+                                }
+                                else {
+                                    viewModel.clickedCreature = friend
+                                }
                                 viewModel.showPokePopup = true
-                                viewModel.clickedCreature = realFriend ?? friend
                             }
                     }
                 }
@@ -73,7 +83,7 @@ struct OceanView: View {
         }
         .task {
             if let profile = myProfile {
-                viewModel.setupMultipeer(myProfile: profile)
+                viewModel.setupMultipeer(myProfile: profile, forceRefresh: shouldForceRefresh)
             }
         }
     }
@@ -81,5 +91,5 @@ struct OceanView: View {
 
 #Preview {
     @Previewable @State var viewModel = OceanViewModel()
-    OceanView(viewModel: viewModel, realFriends: [])
+    OceanView(viewModel: viewModel, realFriends: [], shouldForceRefresh: false)
 }
