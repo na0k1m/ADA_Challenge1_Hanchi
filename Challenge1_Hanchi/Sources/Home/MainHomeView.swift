@@ -21,27 +21,21 @@ struct MainHomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image(.background)
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
                 VStack {
                     if let myProfile = myCreatures.first {
                         MyProfileComponent(viewModel: viewModel, myCreature: myProfile)
-                            .padding(.top, 70)
                     }
-                    else {
-                        ProgressView()
-                    }
+                    
                     FriendBookGridView(viewModel: viewModel, friendList: otherCreatures)
                         .padding(.horizontal)
-                    Spacer()
+                        .scrollDismissesKeyboard(.interactively)
                 }
                 VStack {
                     Spacer()
+                    
                     BottomButton(isMoveToOcean: $viewModel.isMoveToOcean)
                 }
+                .ignoresSafeArea(.container, edges: .bottom)
                 
                 if viewModel.showFriendDetail {
                     Color.black.opacity(0.2)
@@ -55,6 +49,9 @@ struct MainHomeView: View {
             .task {
                 viewModel.createInitialData(context: modelContext, isEmpty: myCreatures.isEmpty)
             }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
             .navigationDestination(isPresented: $viewModel.isMoveToOcean) {
                 OceanView(myProfile: myCreatures.first, realFriends: otherCreatures, shouldForceRefresh: viewModel.isNicknameChanged) { discovered in
                     if let myProfile = myCreatures.first {
@@ -65,7 +62,13 @@ struct MainHomeView: View {
                     viewModel.isNicknameChanged = false
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(
+                Image(.background)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            )
             .ignoresSafeArea(.keyboard)
         }
     }

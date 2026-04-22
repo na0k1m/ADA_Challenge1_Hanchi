@@ -32,7 +32,7 @@ struct OceanView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
             
-            if !realFriends.isEmpty {
+            if !viewModel.BLEhanchiFriendList.isEmpty {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 0) {
     //                    ForEach(viewModel.hanchiFriendList.enumerated(), id: \.offset) { index, friend in
@@ -71,11 +71,11 @@ struct OceanView: View {
                 }
             }
             else {
-                Text("바닷속이 고요하네요.\n\nWi-Fi나 블루투스가 켜져 있는지 확인해 보세요!")
+                Text("바닷속이 고요하네요 . . .\n\nWi-Fi나 블루투스가\n켜져 있는지 확인해 보세요!")
                     .font(.OwnglyphMeetme.regular.font(size: 25))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                    .padding(.bottom)
+                    .padding(.bottom, 80)
             }
             
             if viewModel.showPokePopup {

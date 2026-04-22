@@ -51,6 +51,7 @@ struct MyProfileComponent: View {
                                 .font(.OwnglyphMeetme.regular.font(size: 26))
                                 .textFieldStyle(.roundedBorder)
                                 .frame(maxWidth: 130)
+                                .submitLabel(.done)
                                 .onSubmit {
                                     viewModel.saveNickname(profile: myCreature)
                                 }
@@ -80,8 +81,8 @@ struct MyProfileComponent: View {
             }
             .padding(.horizontal, 50)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea(.keyboard)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .ignoresSafeArea(.keyboard)
     }
 }
 
